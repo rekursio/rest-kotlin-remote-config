@@ -1,0 +1,24 @@
+apply plugin: 'kotlin'
+apply plugin: "com.github.ben-manes.versions"
+
+buildscript {
+
+    apply from: '../configuration.gradle'
+    apply from: '../dependencies.gradle'
+
+    dependencies {
+        // Apply all gradle plugins
+        classpath gradle_plugins.values()
+    }
+
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://maven.fabric.io/public' }
+    }
+}
+
+dependencies {
+    // Apply all dependencies
+    implementation libraries.values()
+}

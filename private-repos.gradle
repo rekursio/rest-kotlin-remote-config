@@ -1,0 +1,85 @@
+ext {
+    bitbucket = { organization, repository, filePath, tag ->
+        def username
+        def password
+
+        try {
+            username = System.getenv('PRIVATE_REPOS_BITBUCKET_USERNAME') ?: BITBUCKET_USERNAME
+            password = System.getenv('PRIVATE_REPOS_BITBUCKET_PASSWORD') ?: BITBUCKET_PASSWORD
+        }
+        catch (Exception e) {
+        }
+
+        if (username == null || password == null) {
+            throw new GradleException('Couldn\'t fetch file from Bitbucket repository. Please provide $BITBUCKET_USERNAME and $BITBUCKET_PASSWORD values in your ~/.gradle/gradle.properties file')
+        }
+        if (organization == null) {
+            throw new GradleException('Couldn\'t fetch file from Bitbucket repository. Please specify the organization name')
+        }
+        if (repository == null) {
+            throw new GradleException('Couldn\'t fetch file from Bitbucket repository. Please specify the repository name')
+        }
+        if (filePath == null) {
+            throw new GradleException('Couldn\'t fetch file from Bitbucket repository. Please specify the file path inside your repository')
+        }
+        if (tag == null) {
+            throw new GradleException('Couldn\'t fetch file from Bitbucket repository. Please specify the revision commit or tag value')
+        }
+
+        def response
+        try {
+            authorization = "$username:$password".bytes.encodeBase64().toString()
+            response = ['curl', 'GET', '-H', "Authorization: Basic $authorization", "https://api.bitbucket.org/2.0/repositories/$organization/$repository/src/$tag/$filePath"].execute()
+        }
+        catch (Exception e) {
+            throw new GradleException("Couldn't fetch $filePath from $organization/$repository with tag $tag")
+        }
+
+        file = file("${System.getProperty("user.home")}/.gradle/caches/bitbucket/$organization/$repository/$tag/$filePath")
+        file.getParentFile().mkdirs()
+        file.text = response.text
+
+        return file.toPath()
+    }
+
+    github = { organization, repository, filePath, tag ->
+        def accessToken
+
+        try {
+            accessToken = System.getenv('PRIVATE_REPOS_GITHUB_ACCESS_TOKEN') ?: GITHUB_ACCESS_TOKEN
+        }
+        catch (Exception e) {
+        }
+
+        if (accessToken == null) {
+            throw new GradleException('Couldn\'t fetch file from GitHub repository. Please provide $GITHUB_ACCESS_TOKEN value in your ~/.gradle/gradle.properties file')
+        }
+        if (organization == null) {
+            throw new GradleException('Couldn\'t fetch file from GitHub repository. Please specify the organization name')
+        }
+        if (repository == null) {
+            throw new GradleException('Couldn\'t fetch file from GitHub repository. Please specify the repository name')
+        }
+        if (filePath == null) {
+            throw new GradleException('Couldn\'t fetch file from GitHub repository. Please specify the file path inside your repository')
+        }
+        if (tag == null) {
+            throw new GradleException('Couldn\'t fetch file from GitHub repository. Please specify the revision commit or tag value')
+        }
+
+        def response
+        try {
+            response = ['curl', 'GET', '-H', "Authorization: Bearer $accessToken", "https://raw.githubusercontent.com/$organization/$repository/$tag/$filePath"].execute().text
+        }
+        catch (Exception e) {
+            throw new GradleException("Couldn't fetch $filePath from $organization/$repository with tag $tag")
+        }
+
+        file = file("${System.getProperty("user.home")}/.gradle/caches/github/$organization/$repository/$tag/$filePath")
+        file.getParentFile().mkdirs()
+        file.text = response
+
+        return file.toPath()
+
+    }
+}
