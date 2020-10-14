@@ -4,10 +4,10 @@ ext {
         def password
 
         try {
-            username = System.getenv('PRIVATE_REPOS_BITBUCKET_USERNAME') ?: BITBUCKET_USERNAME
-            password = System.getenv('PRIVATE_REPOS_BITBUCKET_PASSWORD') ?: BITBUCKET_PASSWORD
+            username = System.getenv('PRIVATE_REPOSITORIES_BITBUCKET_USERNAME') ?: BITBUCKET_USERNAME
+            password = System.getenv('PRIVATE_REPOSITORIES_BITBUCKET_PASSWORD') ?: BITBUCKET_PASSWORD
         }
-        catch (Exception e) {
+        catch (Exception ignored) {
         }
 
         if (username == null || password == null) {
@@ -46,7 +46,7 @@ ext {
         def accessToken
 
         try {
-            accessToken = System.getenv('PRIVATE_REPOS_GITHUB_ACCESS_TOKEN') ?: GITHUB_ACCESS_TOKEN
+            accessToken = System.getenv('PRIVATE_REPOSITORIES_GITHUB_ACCESS_TOKEN') ?: GITHUB_ACCESS_TOKEN
         }
         catch (Exception e) {
         }
@@ -71,7 +71,7 @@ ext {
         try {
             response = ['curl', 'GET', '-H', "Authorization: Bearer $accessToken", "https://raw.githubusercontent.com/$organization/$repository/$tag/$filePath"].execute().text
         }
-        catch (Exception e) {
+        catch (Exception ignored) {
             throw new GradleException("Couldn't fetch $filePath from $organization/$repository with tag $tag")
         }
 

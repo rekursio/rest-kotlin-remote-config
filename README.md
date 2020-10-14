@@ -38,18 +38,18 @@ Both functions receive the same parameters:
 *  `tag`: Tag or commit reference to retrieve a specific revision of the file
 
 ## GitHub
-For GitHub private projects, create a personal access token from GitHub and define `PRIVATE_REPOS_GITHUB_ACCESS_TOKEN` value in your `~/.gradle/gradle.proporties` file
+For GitHub private projects, create a personal access token from GitHub and define `PRIVATE_REPOSITORIES_GITHUB_ACCESS_TOKEN` value in your `~/.gradle/gradle.proporties` file
 
 ```
-PRIVATE_REPOS_GITHUB_ACCESS_TOKEN = <access token>
+PRIVATE_REPOSITORIES_GITHUB_ACCESS_TOKEN = <access token>
 ```
 
 ## Bitbucket
-For Bitbucket, you must define both `PRIVATE_REPOS_BITBUCKET_USERNAME` and `PRIVATE_REPOS_BITBUCKET_PASSWORD` values in your `~/.gradle/gradle.proporties` file
+For Bitbucket, you must define both `PRIVATE_REPOSITORIES_BITBUCKET_USERNAME` and `PRIVATE_REPOSITORIES_BITBUCKET_PASSWORD` values in your `~/.gradle/gradle.proporties` file
 
 ```
-PRIVATE_REPOS_BITBUCKET_USERNAME = <email>
-PRIVATE_REPOS_BITBUCKET_PASSWORD = <password>
+PRIVATE_REPOSITORIES_BITBUCKET_USERNAME = <email>
+PRIVATE_REPOSITORIES_BITBUCKET_PASSWORD = <password>
 ```
 
 Then apply the configuration from Bitbucket private repository:
