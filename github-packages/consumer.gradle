@@ -1,0 +1,22 @@
+allprojects {
+
+    repositories {
+        def github_packages = [
+                'github-actions-test'
+        ]
+        
+        def github_username = GITHUB_PACKAGES_USERNAME
+        def github_password = GITHUB_PACKAGES_TOKEN
+
+        for (String github_package : github_packages) {
+            maven {
+                url "https://maven.pkg.github.com/rekursio/${github_package}"
+                credentials {
+                    username = github_username
+                    password = github_password
+                }
+            }
+        }
+    }
+
+}
