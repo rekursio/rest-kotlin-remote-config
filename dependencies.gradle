@@ -1,14 +1,14 @@
 ext {
 
-    kotlin_version = '1.4.10'
+    kotlin_version = '1.4.32'
 
     gradle_plugins_versions = [
-            versions_gradle_plugin  : '0.33.0'
+            versions_gradle_plugin  : '0.38.0'
     ]
 
     libraries_versions = [
             // Test
-            junit                   : '4.13.1'
+            junit                   : '4.13.2'
     ]
 
     gradle_plugins = [
